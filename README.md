@@ -39,7 +39,7 @@ douyin/
 ├── service
 └── util
 ```
-![项目目录结构图](%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%9B%BE.png)
+![项目目录结构图](./summ.png)
 
 - conf : 用于存储配置文件
 - controller : 用于处理请求JSON格式返回
