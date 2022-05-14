@@ -5,14 +5,9 @@ import (
 	"github.com/shuxiaoningAK/ADDD_DOUYIN/server/controller"
 )
 
-type UserRouter struct {
-}
-
-func (r *UserRouter) InitUserRouter(router *gin.RouterGroup) {
+func InitUserRouter(router *gin.RouterGroup) {
 	userRouter := router.Group("user")
-	userController := controller.ControllerGroupApp.UserController
-	userRouter.GET("/user/", userController.UserInfo)
-	userRouter.POST("/user/register/", userController.Register)
-	userRouter.POST("/user/login/", userController.Login)
-
+	userRouter.GET("/user/", controller.UserInfo)
+	userRouter.POST("/user/register/", controller.Register)
+	userRouter.POST("/user/login/", controller.Login)
 }

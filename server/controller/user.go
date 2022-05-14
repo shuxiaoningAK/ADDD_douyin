@@ -1,18 +1,25 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/shuxiaoningAK/ADDD_DOUYIN/server/service"
+	"net/http"
+)
 
-type UserController struct {
+func UserInfo(ctx *gin.Context) {
+	token := ctx.Query("token")
+	ctx.JSON(http.StatusOK, service.UserInfo(token))
+
 }
 
-func (c *UserController) UserInfo(ctx *gin.Context) {
-	userService.UserInfo()
+func Register(ctx *gin.Context) {
+	username := ctx.Query("username")
+	password := ctx.Query("password")
+	ctx.JSON(http.StatusOK, service.Register(username, password))
 }
 
-func (c *UserController) Register(ctx *gin.Context) {
-	userService.Register()
-}
-
-func (c *UserController) Login(ctx *gin.Context) {
-	userService.Login()
+func Login(ctx *gin.Context) {
+	username := ctx.Query("username")
+	password := ctx.Query("password")
+	ctx.JSON(http.StatusOK, service.Login(username, password))
 }
