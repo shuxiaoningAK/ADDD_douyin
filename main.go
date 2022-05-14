@@ -1,11 +1,17 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"ADDD_douyin/routes"
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
 
-	initRounter()
+	routes.InitRouter(r)
 
-	r.run() // listen and serve on 0.0.0.0:8080
+	err := r.Run()
+	if err != nil {
+		return
+	} // listen and serve on 0.0.0.0:8080
 }
