@@ -16,10 +16,10 @@ type UserService struct {
 }
 
 //UserRegisterService 用户注册服务
-func (service *UserService) Register() *serializer.UserRegisterResponse {
+func (service *UserService) Register(username, password string) *serializer.UserRegisterResponse {
 	var user model.User
-	var count int
-	conf.DB.Model(&model.User{}).Where("name=?", service.UserName).First(&user).Count(&count)
+	count := 0
+	conf.DB.Model(&model.User{}).Where("name=?", username).First(&user).Count(&count)
 	if count == 1 { //查找到了用户，表示该用户名已被使用
 		return &serializer.UserRegisterResponse{
 			Response: serializer.Response{
@@ -28,9 +28,9 @@ func (service *UserService) Register() *serializer.UserRegisterResponse {
 			},
 		}
 	}
-	user.Name = service.UserName
+	user.Name = username
 	//设置密码
-	if err := user.SetPassword(service.Password); err != nil {
+	if err := user.SetPassword(password); err != nil {
 		fmt.Println(err)
 		return &serializer.UserRegisterResponse{
 			Response: serializer.Response{
