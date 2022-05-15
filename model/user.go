@@ -18,8 +18,3 @@ type UserResponse struct {
 	Response
 	User User `json:"user"`
 }
-
-type Response struct {
-	StatusCode int32  `json:"status_code"`
-	StatusMsg  string `json:"status_msg,omitempty"`
-}
