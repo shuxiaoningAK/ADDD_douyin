@@ -2,7 +2,6 @@ package routes
 
 import (
 	"ADDD_DOUYIN/controller"
-	"ADDD_DOUYIN/middleware"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -18,15 +17,9 @@ func NewRouter() *gin.Engine {
 		//   ***************basic apis***************
 
 		//apiRouter.GET("/feed/", controller.Feed)   //TODO不限制登录状态，返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个
-
 		apiRouter.POST("/user/register/", controller.UserRegister) //新用户注册时提供用户名，密码，昵称即可，用户名需要保证唯一。创建成功后返回用户 id 和权限token
 		apiRouter.POST("/user/login/", controller.UserLogin)       //通过用户名和密码进行登录，登录成功后返回用户 id 和权限 token
-
-		authApiRouter := apiRouter.Group("/")
-		authApiRouter.Use(middleware.TOKENPARSE()) //需要用户带token访问的路由放在此
-		{
-			apiRouter.GET("/user/", controller.UserInfo) //TODO获取登录用户的 id、昵称，如果实现社交部分的功能，还会返回关注数和粉丝数
-		}
+		apiRouter.GET("/user/", controller.UserInfo)               //TODO获取登录用户的 id、昵称，如果实现社交部分的功能，还会返回关注数和粉丝数
 
 		//apiRouter.POST("/publish/action/", controller.Publish) //TODO登录用户选择视频上传
 		//apiRouter.GET("/publish/list/", controller.PublishList) //TODO登录用户的视频发布列表，直接列出用户所有投稿过的视频

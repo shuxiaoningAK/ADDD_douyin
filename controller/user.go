@@ -63,7 +63,17 @@ func UserInfo(c *gin.Context) {
 	}
 	if err := c.ShouldBind(&userInfoService); err == nil {
 		res := userInfoService.UserInfo(claims.Id)
-		c.JSON(http.StatusOK, res)
+		var user serializer.User
+		user.Id = res.Id
+		user.Name = res.Name
+		user.FollowCount = res.FollowCount
+		user.FollowerCount = res.FollowerCount
+		user.IsFollow = res.IsFollow
+		c.JSON(http.StatusOK, gin.H{
+			"status_code": res.StatusCode,
+			"status_msg":  res.StatusMsg,
+			"user":        user,
+		})
 	} else {
 		c.JSON(http.StatusOK, serializer.UserInfoResponse{
 			Response: serializer.Response{StatusCode: 1,
