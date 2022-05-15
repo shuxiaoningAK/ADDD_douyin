@@ -7,7 +7,7 @@ type Response struct {
 }
 
 type User struct {
-	Id            int64  `json:"id,omitempty"`
+	Id            uint   `json:"id,omitempty"`
 	Name          string `json:"name,omitempty"`
 	FollowCount   int64  `json:"follow_count,omitempty"`
 	FollowerCount int64  `json:"follower_count,omitempty"`
@@ -16,7 +16,7 @@ type User struct {
 
 //video response
 type Video struct {
-	Id            int64  `json:"id,omitempty"`
+	Id            uint   `json:"id,omitempty"`
 	Author        User   `json:"author"`
 	PlayUrl       string `json:"play_url,omitempty"`
 	CoverUrl      string `json:"cover_url,omitempty"`
@@ -27,7 +27,7 @@ type Video struct {
 
 //comment response
 type Comment struct {
-	Id         int64  `json:"id,omitempty"`
+	Id         uint   `json:"id,omitempty"`
 	User       User   `json:"user"`
 	Content    string `json:"content,omitempty"`
 	CreateDate string `json:"create_date,omitempty"`

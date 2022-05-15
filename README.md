@@ -7,8 +7,8 @@ This is a project for a group. The goal is for the champion.
 ## 1.基础接口
    1. - [x]  视频流接口   //TODO开发中
    2. - [x]  用户注册
-   3. - [x]  用户登录
-   4. - [ ]  用户信息
+   3. - [x]  用户登录      
+   4. - [x]  用户信息    //TODO 需要测试
    5. - [ ]  投稿接口
    6. - [ ]  发布接口
 
@@ -57,7 +57,7 @@ douyin/
 go mod tidy
 ```
 **2.配置数据库**
-项目已经使用gorm开启了**数据库自动迁移模式**，仅需在conf/config.ini文件中配置好参数，开启数据库即可。
+项目已经使用gorm开启了**数据库自动迁移模式**，仅需在conf/config.ini文件中配置好参数，建立douyin数据库,建立三张表{user，comment，video}并赋予主键id即可(其他字段无需填写)。
 
 **3.运行**
 ```go
@@ -73,9 +73,13 @@ ALTER TABLE user MODIFY COLUMN name VARCHAR(50) BINARY CHARACTER SET utf8 COLLAT
 1. 也可使用客户端测试
 
 
-## 后续的优化
-TODO
-是否考虑过SQL注入，越权等安全问题的防御方式
-数据表是否设置了合理的索引，处理了常见的性能问题
-等等。。。
+## 后续的优化 //TODO
+
+### 飞书文档中提到的加分项
+1.是否考虑过SQL注入，越权等安全问题的防御方式\
+2.数据表是否设置了合理的索引，处理了常见的性能问题
+
+### 啊对对队中实现的优化
+未完成
+
 

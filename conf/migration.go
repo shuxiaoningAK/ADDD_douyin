@@ -1,7 +1,7 @@
 package conf
 
 import (
-	"douyin/model"
+	"ADDD_DOUYIN/model"
 )
 
 //执行数据迁移
@@ -13,5 +13,4 @@ func migration() {
 		AutoMigrate(&model.Comment{})
 	DB.Model(&model.Video{}).AddForeignKey("uid", "User(id)", "CASCADE", "CASCADE")
 	DB.Model(&model.Comment{}).AddForeignKey("uid", "User(id)", "CASCADE", "CASCADE")
-
 }

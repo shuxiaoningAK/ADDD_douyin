@@ -1,4 +1,4 @@
-module douyin
+module ADDD_DOUYIN
 
 go 1.18
 

@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"douyin/serializer"
-	"douyin/service"
+	"ADDD_DOUYIN/serializer"
+	"ADDD_DOUYIN/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

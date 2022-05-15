@@ -1,48 +1,42 @@
 package util
 
 import (
-	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-var jwtSecret = []byte(os.Getenv("ACCESS_SECRET"))
+var jwtKey = []byte("www.miniDouyin.com")
+var str string
 
 type Claims struct {
-	Id        uint   `json:"id"`
-	Username  string `json:"username"`
-	Authority int    `json:"authority"`
+	Id       uint   `json:"id"`
+	Username string `json:"username"`
 	jwt.StandardClaims
 }
 
 //生成用户Token
 func GenerateToken(id uint, username string, authority int) (string, error) {
-	nowTime := time.Now()
-	expireTime := nowTime.Add(24 * time.Hour) //token有效期设置为1天
-	claims := Claims{
-		Id:        id,
-		Username:  username,
-		Authority: authority,
+	expireTime := time.Now().Add(7 * 24 * time.Hour) //token有效期设置为7天
+	claims := &Claims{                               //TODO 后续可以将token写入Redis并设置过期时间，而不用Web服务器进行设置
+		Id:       id,
+		Username: username,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "douyin",
+			Issuer:    "minidouyin",
+			Subject:   "user token",
 		},
 	}
-	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := tokenClaims.SignedString(jwtSecret)
-	return token, err
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(jwtKey)
+	return tokenString, err
 }
 
-//验证用户token
-func ParseToken(token string) (*Claims, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
+//解析token
+func ParseToken(tokenString string) (*jwt.Token, *Claims, error) {
+	Claims := &Claims{}
+	token, err := jwt.ParseWithClaims(tokenString, Claims, func(token *jwt.Token) (i interface{}, err error) {
+		return jwtKey, nil
 	})
-	if tokenClaims != nil {
-		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
-			return claims, nil
-		}
-	}
-	return nil, err
+	return token, Claims, err
 }

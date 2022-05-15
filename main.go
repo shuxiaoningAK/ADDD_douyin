@@ -1,8 +1,8 @@
 package main
 
 import (
-	"douyin/conf"
-	"douyin/routes"
+	"ADDD_DOUYIN/conf"
+	"ADDD_DOUYIN/routes"
 	"fmt"
 )
 

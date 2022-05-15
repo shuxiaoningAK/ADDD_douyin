@@ -1,8 +1,8 @@
 package service
 
 import (
-	"douyin/conf"
-	"douyin/serializer"
+	"ADDD_DOUYIN/conf"
+	"ADDD_DOUYIN/serializer"
 	"fmt"
 	"time"
 
