@@ -33,10 +33,9 @@ func LoadServer(file *ini.File) {
 }
 func LoadData(file *ini.File) {
 	Db = file.Section("database").Key("Db").MustString("mysql")
-	DbHost = file.Section("database").Key("DbHost").MustString("")
-	DbPort = file.Section("database").Key("DbPort").MustString("3306")
+	DbHost = file.Section("database").Key("DbHost").MustString("bj-cynosdbmysql-grp-pvwrb8uw.sql.tencentcdb.com")
+	DbPort = file.Section("database").Key("DbPort").MustString("24295")
 	DbUser = file.Section("database").Key("DbUser").MustString("root")
-	DbPassWord = file.Section("database").Key("DbPassWord").MustString("Sxn@163!")
+	DbPassWord = file.Section("database").Key("DbPassWord").MustString("SXNsxn!!")
 	DbName = file.Section("database").Key("DbName").MustString("douyin")
-
 }
