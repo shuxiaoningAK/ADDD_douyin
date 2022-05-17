@@ -1,30 +1,37 @@
-package controller
+package api
 
 import (
 	"ADDD_douyin/model"
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 	"net/http"
 	"sync/atomic"
 )
 
-// usersLoginInfo use to store user info, and key is username+possword for demo
-// user data will be cleared every time the server starts
-// test data: username = zhanglei, possword  = douyin
-
-var usersLoginInfo = map[string]model.User{
-
-	"zhangleidouyin": {
-		Id:            1,
-		Name:          "zhanglei",
-		FollowCount:   10,
-		FollowerCount: 5,
-		IsFollow:      true,
-	},
-}
+//var usersLoginInfo = map[string]model.User{
+//
+//	"zhangleidouyin": {
+//		Name:          "zhanglei",
+//		FollowCount:   10,
+//		FollowerCount: 5,
+//		IsFollow:      true,
+//	},
+//}
 
 var userIdSequence = int64(1)
 
+// 查询用户是否存在
+func CheckUser(token string) (user model.User, err error) {
+	var users model.User
+	db.Where("token = ?", token).First(&user)
+	if user.Name == "" {
+		return user, nil
+	}
+}
+
+// 登录用户
 func Login(c *gin.Context) {
+
 	username := c.Query("username")
 	password := c.Query("password")
 
@@ -33,7 +40,6 @@ func Login(c *gin.Context) {
 	if user, exist := usersLoginInfo[token]; exist {
 		c.JSON(http.StatusOK, model.UserLoginResponse{
 			Response: model.Response{StatusCode: 0},
-			UserId:   user.Id,
 			Token:    token,
 		})
 	} else {
@@ -43,6 +49,7 @@ func Login(c *gin.Context) {
 	}
 }
 
+// 查看用户信息
 func UserInfo(c *gin.Context) {
 	token := c.Query("token")
 
@@ -58,7 +65,9 @@ func UserInfo(c *gin.Context) {
 	}
 }
 
+// 注册用户
 func Register(c *gin.Context) {
+
 	username := c.Query("username")
 	password := c.Query("password")
 
