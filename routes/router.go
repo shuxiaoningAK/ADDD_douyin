@@ -2,10 +2,12 @@ package routes
 
 import (
 	"ADDD_douyin/controller"
+	"ADDD_douyin/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter(r *gin.Engine) {
+	gin.SetMode(utils.AppMode)
 	// public directory is used to serve static resources
 	r.Static("/static", "./public")
 
