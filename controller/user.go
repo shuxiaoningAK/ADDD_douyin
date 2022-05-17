@@ -12,6 +12,7 @@ import (
 // test data: username = zhanglei, possword  = douyin
 
 var usersLoginInfo = map[string]model.User{
+
 	"zhangleidouyin": {
 		Id:            1,
 		Name:          "zhanglei",
