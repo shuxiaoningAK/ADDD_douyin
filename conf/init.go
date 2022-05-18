@@ -23,5 +23,4 @@ func Database(connString string) {
 		DB = db
 		migration() //迁移表结构
 	}
-
 }

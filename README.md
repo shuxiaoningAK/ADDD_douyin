@@ -57,7 +57,7 @@ douyin/
 go mod tidy
 ```
 **2.配置数据库**
-项目已经使用gorm开启了**数据库自动迁移模式**，仅需在conf/config.ini文件中配置好参数，建立douyin数据库,建立三张表{user，comment，video}并赋予主键id即可(其他字段无需填写)。
+项目已经使用gorm2且开启了**数据库自动迁移模式**，仅需在conf/config.ini文件中配置好参数，建立douyin数据库，启动服务器即可
 
 **3.运行**
 ```go
