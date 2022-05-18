@@ -15,13 +15,9 @@ type User struct {
 }
 
 //设置密码
-func (user *User) SetPassword(password string) error {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost) //非明文存储密码
-	if err != nil {
-		return err
-	}
+func (user *User) SetPassword(password string) {
+	bytes, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost) //非明文存储密码
 	user.Password = string(bytes)
-	return nil
 }
 
 //校验密码

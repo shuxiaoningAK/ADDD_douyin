@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"gorm.io/gorm"
-	"sync/atomic"
 )
 
 //接受前端传来的用户登录
@@ -23,14 +22,11 @@ type UserInfoService struct {
 	Token  string `json:"token"`
 }
 
-var userIdSequence = uint64(0)
-
 //UserRegisterService 用户注册服务
 func (service *UserService) Register(username, password string) *serializer.UserRegisterResponse {
 	var user model.User
-	var count int64
-	conf.DB.Model(&model.User{}).Where("name=?", username).First(&user).Count(&count)
-	if count == 1 { //查找到了用户，表示该用户名已被使用
+	if !errors.Is(conf.DB.Where("name = ?", username).First(&user).Error, gorm.ErrRecordNotFound) { // 判断用户名是否注册
+		// fixme 建议对包装返回错误信息的代码放在controller层，service层返回业务层面的错误封装
 		return &serializer.UserRegisterResponse{
 			Response: serializer.Response{
 				StatusCode: 1,
@@ -39,17 +35,9 @@ func (service *UserService) Register(username, password string) *serializer.User
 		}
 	}
 	user.Name = username
-	user.ID = uint(atomic.AddUint64(&userIdSequence, 1)) //  生成用户全局id   //TODO后续可以考虑使用更优雅的方式生成UUID，例如雪花算法
+	//user.ID = util.NextId()
 	//设置密码
-	if err := user.SetPassword(password); err != nil {
-		fmt.Println(err)
-		return &serializer.UserRegisterResponse{
-			Response: serializer.Response{
-				StatusCode: 1,
-				StatusMsg:  "加密时出现问题",
-			},
-		}
-	}
+	user.SetPassword(password)
 	//创建用户
 	if err := conf.DB.Create(&user).Error; err != nil {
 		fmt.Println(err)
@@ -60,7 +48,7 @@ func (service *UserService) Register(username, password string) *serializer.User
 			},
 		}
 	}
-	token, err := util.GenerateToken(uint(userIdSequence), service.UserName, 0)
+	token, err := util.GenerateToken(user.ID, service.UserName, 0)
 	if err != nil {
 		fmt.Println(err)
 		return &serializer.UserRegisterResponse{

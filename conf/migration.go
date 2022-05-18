@@ -11,7 +11,7 @@ func migration() {
 	//	AutoMigrate(&model.User{}).
 	//	AutoMigrate(&model.Video{}).
 	//	AutoMigrate(&model.Comment{})
-	if err := DB.AutoMigrate(&model.User{}, &model.Video{}, &model.Comment{}); err != nil {
+	if err := DB.AutoMigrate(&model.User{}, &model.Video{}, &model.Comment{}, &model.UserFollow{}); err != nil {
 		panic(err)
 	}
 }
