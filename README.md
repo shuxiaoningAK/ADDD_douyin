@@ -39,7 +39,7 @@ douyin/
 ├── service
 └── util
 ```
-![summ](./summ.png)
+![summ](docs/summ.png)
 
 - conf : 用于存储配置文件
 - controller : 用于处理请求JSON格式返回
@@ -69,7 +69,7 @@ ALTER TABLE user MODIFY COLUMN name VARCHAR(50) BINARY CHARACTER SET utf8 COLLAT
 ```
 **4.测试**
 1. 可以使用**postman**对接口进行测试
-![postman](./postman.png)
+![postman](docs/postman.png)
 1. 也可使用客户端测试
 
 

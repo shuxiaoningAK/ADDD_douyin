@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 //用户模型
@@ -12,8 +12,6 @@ type User struct {
 	Password      string //密码
 	FollowCount   int64  //关注总数
 	FollowerCount int64  //粉丝总数
-	IsFollow      bool   //true表示已经关注,false表示未关注
-	DeletedAt     string `gorm:"default:'0'"` // 逻辑删除
 }
 
 //设置密码

@@ -5,10 +5,10 @@ import (
 	"ADDD_DOUYIN/model"
 	"ADDD_DOUYIN/serializer"
 	"ADDD_DOUYIN/util"
+	"errors"
 	"fmt"
+	"gorm.io/gorm"
 	"sync/atomic"
-
-	"github.com/jinzhu/gorm"
 )
 
 //接受前端传来的用户登录
@@ -28,7 +28,7 @@ var userIdSequence = uint64(0)
 //UserRegisterService 用户注册服务
 func (service *UserService) Register(username, password string) *serializer.UserRegisterResponse {
 	var user model.User
-	count := 0
+	var count int64
 	conf.DB.Model(&model.User{}).Where("name=?", username).First(&user).Count(&count)
 	if count == 1 { //查找到了用户，表示该用户名已被使用
 		return &serializer.UserRegisterResponse{
@@ -85,7 +85,7 @@ func (service *UserService) Login() serializer.UserLoginResponse {
 	var user model.User
 	if err := conf.DB.Where("name=?", service.UserName).First(&user).Error; err != nil {
 		//如果查询不到，返回相应的错误
-		if gorm.IsRecordNotFoundError(err) {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			fmt.Println(err)
 			return serializer.UserLoginResponse{
 				Response: serializer.Response{StatusCode: 1,
@@ -130,7 +130,7 @@ func (service *UserInfoService) UserInfo(userId uint) serializer.UserInfoRespons
 	var user model.User
 	if err := conf.DB.Where("id=?", userId).First(&user).Error; err != nil {
 		//如果查询不到，返回相应的错误
-		if gorm.IsRecordNotFoundError(err) {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			fmt.Println(err)
 			return serializer.UserInfoResponse{
 				Response: serializer.Response{StatusCode: 1,
@@ -156,7 +156,6 @@ func (service *UserInfoService) UserInfo(userId uint) serializer.UserInfoRespons
 			Name:          user.Name,
 			FollowCount:   user.FollowCount,
 			FollowerCount: user.FollowerCount,
-			IsFollow:      user.IsFollow,
 		},
 	}
 }
