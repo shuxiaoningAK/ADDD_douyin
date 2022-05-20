@@ -4,9 +4,8 @@ import (
 	"ADDD_DOUYIN/serializer"
 	"ADDD_DOUYIN/service"
 	"ADDD_DOUYIN/util"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func UserRegister(c *gin.Context) {
@@ -81,4 +80,24 @@ func UserInfo(c *gin.Context) {
 			},
 		})
 	}
+}
+
+func Publish(ctx *gin.Context) {
+	// TODO 获取jwt检查权限
+
+	//var data *multipart.FileHeader
+
+	//if data, err = ctx.FormFile("data"); err != nil {
+	//	ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+	//	return
+	//}
+
+	title := ctx.Param("title")
+
+	if err := service.Publish(1, title, nil); err != nil {
+		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+	}
+
+	ctx.JSON(http.StatusOK, serializer.Success)
+
 }
