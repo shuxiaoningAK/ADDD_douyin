@@ -22,13 +22,15 @@ func InitDb() {
 		utils.DbName))
 
 	if err != nil {
-		fmt.Println("连接数据库错误，请检查参数", err)
+		fmt.Println("连接数据库失败，请检查参数", err)
 	}
 
 	// 禁用数据表的复数形式
 	db.SingularTable(true)
+
 	// 自动迁移
 	db.AutoMigrate(&User{})
+
 	//设置连接池中的最大连接数
 	db.DB().SetMaxIdleConns(5)
 
