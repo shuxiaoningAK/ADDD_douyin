@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"ADDD_DOUYIN/model"
 	"ADDD_DOUYIN/serializer"
 	"ADDD_DOUYIN/service"
 	"ADDD_DOUYIN/util"
 	"github.com/gin-gonic/gin"
+	"mime/multipart"
 	"net/http"
 )
 
@@ -85,6 +87,7 @@ func UserInfo(c *gin.Context) {
 }
 
 func Publish(ctx *gin.Context) {
+	video := &model.Video{}
 	token, claims, err := util.ParseToken(ctx.PostForm("token"))
 	if err != nil || !token.Valid {
 		ctx.JSON(http.StatusOK, serializer.InvalidToken)
@@ -92,17 +95,24 @@ func Publish(ctx *gin.Context) {
 		return
 	}
 
-	//var data *multipart.FileHeader
+	video.Title = ctx.PostForm("title")
+	video.AuthorId = claims.Id
+	video.CoverUrl = "https://iph.href.lu/400x400?text=%E6%97%A0&fg=666666&bg=cccccc" // fixme
 
-	//if data, err = ctx.FormFile("data"); err != nil {
-	//	ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
-	//	return
-	//}
-
-	title := ctx.PostForm("title")
-
-	if err := service.Publish(claims.Id, title, nil); err != nil {
+	var data *multipart.FileHeader
+	if data, err = ctx.FormFile("data"); err != nil {
 		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+		return
+	}
+
+	if video.PlayUrl, err = util.UploadVideo(util.NextUuid(), data); err != nil {
+		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+		return
+	}
+
+	if err = service.Publish(video); err != nil {
+		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.Success)
@@ -120,6 +130,7 @@ func PublishList(ctx *gin.Context) {
 	res, err := service.PublishList(claim.Id)
 	if err != nil {
 		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.FeedResponse{

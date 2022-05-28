@@ -7,6 +7,6 @@ type Comment struct {
 	gorm.Model
 	User    User
 	UserId  uint
-	Uid     uint   `gorm:"not null"`
+	VideoId uint
 	Content string `gorm:"type:longtext"`
 }

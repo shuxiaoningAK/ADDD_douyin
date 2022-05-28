@@ -1,10 +1,12 @@
 package conf
 
 import (
+	"ADDD_DOUYIN/util"
 	"fmt"
-	"strings"
-
+	"github.com/tencentyun/cos-go-sdk-v5"
 	"gopkg.in/ini.v1"
+	"net/url"
+	"strings"
 )
 
 var (
@@ -31,4 +33,11 @@ func Init() {
 	DbName = file.Section("mysql").Key("DbName").String()
 	path := strings.Join([]string{DbUser, ":", DbPassWord, "@tcp(", DbHost, ":", DbPort, ")/", DbName, "?charset=utf8&parseTime=true"}, "")
 	Database(path)
+
+	//初始化cos
+	u, _ := url.Parse(file.Section("cos").Key("url").String())
+	b := &cos.BaseURL{BucketURL: u}
+	id := file.Section("cos").Key("id").String()
+	key := file.Section("cos").Key("key").String()
+	util.InitCos(b, id, key)
 }

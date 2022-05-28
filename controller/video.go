@@ -3,21 +3,26 @@ package controller
 import (
 	"ADDD_DOUYIN/serializer"
 	"ADDD_DOUYIN/service"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
+	"time"
 )
 
-func Feeds(c *gin.Context) {
-	var feedService service.FeedService
-	if err := c.ShouldBind(&feedService); err != nil {
-		c.JSON(http.StatusOK, serializer.FeedResponse{
-			Response: serializer.Response{StatusCode: 1,
-				StatusMsg: "binding方法出错",
-			},
-		})
+func Feed(c *gin.Context) {
+
+	latestTime := c.Query("latest_time")
+	if latestTime == "" {
+		latestTime = strconv.FormatInt(time.Now().Unix(), 10)
+	}
+
+	if res, err := service.Feed(latestTime); err != nil {
+		c.JSON(http.StatusOK, serializer.ConvertErr(err))
 	} else {
-		res := feedService.FeedService()
-		c.JSON(http.StatusOK, res)
+		c.JSON(http.StatusOK, serializer.FeedResponse{
+			Response:  serializer.Success,
+			VideoList: serializer.PackVideos(res),
+			NextTime:  time.Now().Unix(), // fixme 本次最早时间作为下次请求时间？
+		})
 	}
 }

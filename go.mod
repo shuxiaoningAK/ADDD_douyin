@@ -9,13 +9,18 @@ require (
 
 require (
 	github.com/charizer/snowflake v0.0.0-20191002053145-afeff3e387d5 // indirect
+	github.com/clbanning/mxj v1.8.4 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/mozillazg/go-httpheader v0.3.1 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.35 // indirect
 	gorm.io/driver/mysql v1.3.3 // indirect
 	gorm.io/gorm v1.23.5 // indirect
 )

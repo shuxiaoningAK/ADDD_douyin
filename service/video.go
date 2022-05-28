@@ -2,6 +2,7 @@ package service
 
 import (
 	"ADDD_DOUYIN/conf"
+	"ADDD_DOUYIN/model"
 	"ADDD_DOUYIN/serializer"
 	"errors"
 	"fmt"
@@ -12,6 +13,13 @@ import (
 type FeedService struct { //TODO 目前用户登录与否都可以返回Feed流，或许以后可以根据用户的特征push一些定制化的Feed流
 	LatestTime string `json:"latest_time,omitempty"`
 	Token      string `json:"token,omitempty"`
+}
+
+func Feed(latestTime string) ([]*model.Video, error) {
+	vs := make([]*model.Video, 30)
+	// fixme filter by latestTime
+	err := conf.DB.Preload("Author").Find(&vs).Order("created_at DESC").Limit(30).Error
+	return vs, err
 }
 
 //Feed流服务

@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"gorm.io/gorm"
-	"mime/multipart"
 )
 
 //接受前端传来的用户登录
@@ -149,19 +148,12 @@ func (service *UserInfoService) UserInfo(userId uint) serializer.UserInfoRespons
 	}
 }
 
-//Publish FIXME 逻辑不全 现在只做了表数据的创建
-func Publish(userId uint, title string, data *multipart.FileHeader) error {
-	var video model.Video
-	video.AuthorId = userId
-	video.Title = title
+func Publish(video *model.Video) error {
 	return conf.DB.Create(&video).Error
 }
 
 func PublishList(userId uint) ([]*model.Video, error) {
 	videos := make([]*model.Video, 0)
-	if err := conf.DB.Where("author_id = ?", userId).Find(&videos).Error; err != nil {
-		return nil, err
-	}
-
-	return videos, nil
+	err := conf.DB.Where("author_id = ?", userId).Find(&videos).Error
+	return videos, err
 }

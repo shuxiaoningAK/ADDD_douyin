@@ -1,17 +1,12 @@
 package model
 
-import (
-	"gorm.io/gorm"
-	"time"
-)
+import "gorm.io/gorm"
 
 type UserFollow struct {
-	User     User `gorm:"foreignKey:Uid;"`
-	Follower User `gorm:"foreignKey:Fid"`
-	Uid      uint `gorm:"primaryKey"`
-	Fid      uint `gorm:"primaryKey"`
+	User       User
+	Follower   User
+	UserId     uint `gorm:"index:user_follow"`
+	FollowerId uint `gorm:"index:user_follow"`
 
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	gorm.Model
 }
