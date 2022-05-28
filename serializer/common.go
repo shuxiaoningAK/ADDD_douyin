@@ -12,6 +12,7 @@ const (
 	LoginErrCode            = 10003
 	UserNotExistErrCode     = 10004
 	UserAlreadyExistErrCode = 10005
+	InvalidTokenErrCode     = 10006
 )
 
 // Basic  Response
@@ -40,6 +41,7 @@ var (
 	LoginErr            = NewErrNo(LoginErrCode, "Wrong username or password")
 	UserNotExistErr     = NewErrNo(UserNotExistErrCode, "User does not exists")
 	UserAlreadyExistErr = NewErrNo(UserAlreadyExistErrCode, "User already exists")
+	InvalidToken        = NewErrNo(InvalidTokenErrCode, "Invalid token")
 )
 
 // ConvertErr convert error to Errno

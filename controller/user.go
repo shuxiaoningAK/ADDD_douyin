@@ -85,7 +85,12 @@ func UserInfo(c *gin.Context) {
 }
 
 func Publish(ctx *gin.Context) {
-	// TODO 获取jwt检查权限
+	token, claims, err := util.ParseToken(ctx.PostForm("token"))
+	if err != nil || !token.Valid {
+		ctx.JSON(http.StatusOK, serializer.InvalidToken)
+		ctx.Abort()
+		return
+	}
 
 	//var data *multipart.FileHeader
 
@@ -94,12 +99,32 @@ func Publish(ctx *gin.Context) {
 	//	return
 	//}
 
-	title := ctx.Param("title")
+	title := ctx.PostForm("title")
 
-	if err := service.Publish(1, title, nil); err != nil {
+	if err := service.Publish(claims.Id, title, nil); err != nil {
 		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
 	}
 
 	ctx.JSON(http.StatusOK, serializer.Success)
+
+}
+
+func PublishList(ctx *gin.Context) {
+	token, claim, err := util.ParseToken(ctx.Query("token"))
+	if err != nil || !token.Valid {
+		ctx.JSON(http.StatusOK, serializer.InvalidToken)
+		ctx.Abort()
+		return
+	}
+
+	res, err := service.PublishList(claim.Id)
+	if err != nil {
+		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+	}
+
+	ctx.JSON(http.StatusOK, serializer.FeedResponse{
+		Response:  serializer.Success,
+		VideoList: serializer.PackVideos(res),
+	})
 
 }

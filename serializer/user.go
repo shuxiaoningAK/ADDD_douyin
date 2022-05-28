@@ -1,5 +1,7 @@
 package serializer
 
+import "ADDD_DOUYIN/model"
+
 //序列化的UserLoginResponse
 type UserLoginResponse struct {
 	Response
@@ -20,4 +22,17 @@ type UserRegisterResponse struct {
 type UserInfoResponse struct {
 	Response
 	User
+}
+
+func PackUser(u *model.User, isFollowed bool) *User {
+	if u == nil {
+		return nil
+	}
+	return &User{
+		Id:            u.ID,
+		Name:          u.Name,
+		FollowCount:   u.FollowCount,
+		FollowerCount: u.FollowerCount,
+		IsFollow:      isFollowed,
+	}
 }

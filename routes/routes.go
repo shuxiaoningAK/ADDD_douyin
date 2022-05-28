@@ -24,8 +24,8 @@ func NewRouter() *gin.Engine {
 		apiRouter.POST("/user/login/", controller.UserLogin)       //通过用户名和密码进行登录，登录成功后返回用户 id 和权限 token
 		apiRouter.GET("/user/", controller.UserInfo)               //TODO获取登录用户的 id、昵称，如果实现社交部分的功能，还会返回关注数和粉丝数
 
-		apiRouter.POST("/publish/action/", controller.Publish) //TODO登录用户选择视频上传
-		//apiRouter.GET("/publish/list/", controller.PublishList) //TODO登录用户的视频发布列表，直接列出用户所有投稿过的视频
+		apiRouter.POST("/publish/action/", controller.Publish)  //TODO登录用户选择视频上传
+		apiRouter.GET("/publish/list/", controller.PublishList) //TODO登录用户的视频发布列表，直接列出用户所有投稿过的视频
 
 		//   ***************extra apis - I***************
 

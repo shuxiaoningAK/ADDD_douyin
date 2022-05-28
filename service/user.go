@@ -153,6 +153,15 @@ func (service *UserInfoService) UserInfo(userId uint) serializer.UserInfoRespons
 func Publish(userId uint, title string, data *multipart.FileHeader) error {
 	var video model.Video
 	video.AuthorId = userId
-	video.Uid = userId
+	video.Title = title
 	return conf.DB.Create(&video).Error
+}
+
+func PublishList(userId uint) ([]*model.Video, error) {
+	videos := make([]*model.Video, 0)
+	if err := conf.DB.Where("author_id = ?", userId).Find(&videos).Error; err != nil {
+		return nil, err
+	}
+
+	return videos, nil
 }

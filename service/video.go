@@ -16,7 +16,7 @@ type FeedService struct { //TODO 目前用户登录与否都可以返回Feed流�
 
 //Feed流服务
 func (service *FeedService) FeedService() serializer.FeedResponse {
-	videoList := make([]serializer.Video, 30) //定义返回Response中的videoList，且预分配内存
+	videoList := make([]*serializer.Video, 30) //定义返回Response中的videoList，且预分配内存
 	if err := conf.DB.Select("*").Order("created_at DESC").Limit(30).Scan(&videoList).Error; err != nil {
 		//如果查询不到，返回相应的错误
 		if errors.Is(err, gorm.ErrRecordNotFound) {
