@@ -13,7 +13,7 @@ import (
 
 //接受前端传来的用户登录
 type UserService struct {
-	UserName string `json:"user_name"`
+	UserName string `json:"username"`
 	Password string `json:"password"`
 }
 
@@ -70,9 +70,9 @@ func (service *UserService) Register(username, password string) *serializer.User
 }
 
 //Login 用户登陆服务
-func (service *UserService) Login() serializer.UserLoginResponse {
+func (service *UserService) Login(username, password string) serializer.UserLoginResponse {
 	var user model.User
-	if err := conf.DB.Where("name=?", service.UserName).First(&user).Error; err != nil {
+	if err := conf.DB.Where("name=?", username).First(&user).Error; err != nil {
 		//如果查询不到，返回相应的错误
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			fmt.Println(err)
@@ -89,7 +89,7 @@ func (service *UserService) Login() serializer.UserLoginResponse {
 			},
 		}
 	}
-	if !user.CheckPassword(service.Password) {
+	if !user.CheckPassword(password) {
 		return serializer.UserLoginResponse{
 			Response: serializer.Response{StatusCode: 1,
 				StatusMsg: "密码不匹配",

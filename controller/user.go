@@ -26,8 +26,10 @@ func UserRegister(c *gin.Context) {
 
 func UserLogin(c *gin.Context) {
 	var userLoginService service.UserService
+	username := c.Query("username")
+	password := c.Query("password")
 	if err := c.ShouldBind(&userLoginService); err == nil {
-		res := userLoginService.Login()
+		res := userLoginService.Login(username, password)
 		c.JSON(http.StatusOK, res)
 	} else {
 		c.JSON(http.StatusOK, serializer.UserLoginResponse{
@@ -40,7 +42,7 @@ func UserLogin(c *gin.Context) {
 
 func UserInfo(c *gin.Context) {
 	var userInfoService service.UserInfoService
-	tokenString := c.GetHeader("Authorization")[len("bearer "):] //TODO 本行代码针对客户端可能需要做出改变
+	tokenString := c.Query("token")
 	if tokenString == "" {
 		c.JSON(http.StatusOK, serializer.UserInfoResponse{
 			Response: serializer.Response{StatusCode: 1,

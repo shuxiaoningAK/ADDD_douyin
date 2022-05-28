@@ -2,6 +2,7 @@ package routes
 
 import (
 	"ADDD_DOUYIN/controller"
+	"net/http"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -14,6 +15,8 @@ func NewRouter() *gin.Engine {
 	r.Use(sessions.Sessions("douyin-session", cookie.NewStore([]byte("secret-about-douyin"))))
 	apiRouter := r.Group("/douyin")
 	{
+
+		apiRouter.GET("/ping", ping)
 		//   ***************basic apis***************
 
 		//apiRouter.GET("/feed/", controller.Feed)   //TODO不限制登录状态，返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个
@@ -38,4 +41,8 @@ func NewRouter() *gin.Engine {
 		//apiRouter.GET("/relation/follower/list/", controller.FollowerList) //TODO拉取用户的粉丝列表
 	}
 	return r
+}
+
+func ping(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, "PONG")
 }
