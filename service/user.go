@@ -139,12 +139,7 @@ func (service *UserInfoService) UserInfo(userId uint) serializer.UserInfoRespons
 			StatusCode: 0,
 			StatusMsg:  "用户信息查询成功",
 		},
-		User: serializer.User{
-			Id:            user.ID,
-			Name:          user.Name,
-			FollowCount:   user.FollowCount,
-			FollowerCount: user.FollowerCount,
-		},
+		User: serializer.PackUser(&user, userId, false, false),
 	}
 }
 

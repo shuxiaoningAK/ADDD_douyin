@@ -2,7 +2,6 @@ package util
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-redis/redis/v8"
 	"strconv"
 	"time"
@@ -87,28 +86,45 @@ func (r *redisUtil) IsLike(videoId, userId uint) (bool, error) {
 	return err != redis.Nil, err
 }
 
-func (r *redisUtil) Follow(follower uint, followee uint) error {
-	return fmt.Errorf("unimplement")
+func (r *redisUtil) Follow(who uint, target uint) error {
+	if err := r.server.ZAdd(r.ctx, userFollowerKey(target), newZWithNowTime(who)).Err(); err != nil {
+		return err
+	}
+	if err := r.server.ZAdd(r.ctx, userFolloweeKey(who), newZWithNowTime(target)).Err(); err != nil {
+		return err
+	}
+	return nil
 }
 
-func (r *redisUtil) UnFollow(follower uint, followee uint) error {
-	return fmt.Errorf("unimplement")
+func (r *redisUtil) UnFollow(who uint, target uint) error {
+	if err := r.server.ZRem(r.ctx, userFollowerKey(target), who).Err(); err != nil {
+		return err
+	}
+	if err := r.server.ZRem(r.ctx, userFolloweeKey(who), target).Err(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *redisUtil) CountFollower(id uint) (int64, error) {
-	return 0, fmt.Errorf("unimplement")
+	return r.server.ZCard(r.ctx, userFollowerKey(id)).Result()
 }
 
 func (r *redisUtil) CountFollowee(id uint) (int64, error) {
-	return 0, fmt.Errorf("unimplement")
+	return r.server.ZCard(r.ctx, userFolloweeKey(id)).Result()
 }
 
 func (r *redisUtil) RangeFollower(id uint, start, stop int64) ([]*uint64, error) {
-	return nil, fmt.Errorf("unimplement")
+	return r.range0(userFollowerKey(id), start, stop)
 }
 
 func (r *redisUtil) RangeFollowee(id uint, start, stop int64) ([]*uint64, error) {
-	return nil, fmt.Errorf("unimplement")
+	return r.range0(userFolloweeKey(id), start, stop)
+}
+
+func (r *redisUtil) IsFollow(who uint, target uint) (bool, error) {
+	_, err := r.server.ZRank(r.ctx, userFolloweeKey(who), strconv.FormatUint(uint64(target), 10)).Result()
+	return err != redis.Nil, err
 }
 
 func (r *redisUtil) IncrComment(id uint) error {
@@ -138,11 +154,11 @@ func userLikeKey(userId uint) string {
 	return cacheName + ":" + userLikeDomain + ":" + strconv.FormatUint(uint64(userId), 10)
 }
 
-func followerKey(id uint) string {
+func userFollowerKey(id uint) string {
 	return cacheName + ":" + followerDomain + ":" + strconv.FormatUint(uint64(id), 10)
 }
 
-func followeeKey(id uint) string {
+func userFolloweeKey(id uint) string {
 	return cacheName + ":" + followeeDomain + ":" + strconv.FormatUint(uint64(id), 10)
 }
 

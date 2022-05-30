@@ -26,7 +26,7 @@ func PackVideo(v *model.Video, userId uint, check, defaultTo bool) *Video {
 
 	return &Video{
 		Id:            v.ID,
-		Author:        *PackUser(&v.Author, false),
+		Author:        *PackUser(&v.Author, userId, true, false),
 		PlayUrl:       v.PlayUrl,
 		CoverUrl:      v.CoverUrl,
 		FavoriteCount: favoriteCount,

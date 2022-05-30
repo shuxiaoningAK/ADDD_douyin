@@ -35,9 +35,9 @@ func NewRouter() *gin.Engine {
 
 		//    ***************extra apis - II***************
 
-		//apiRouter.POST("/relation/action/", controller.RelationAction) //TODO登录用户对一个用户进行关注
-		//apiRouter.GET("/relation/follow/list/", controller.FollowList)  //TODO拉取用户的关注列表
-		//apiRouter.GET("/relation/follower/list/", controller.FollowerList) //TODO拉取用户的粉丝列表
+		apiRouter.POST("/relation/action/", controller.RelationAction)     //TODO登录用户对一个用户进行关注
+		apiRouter.GET("/relation/follow/list/", controller.FolloweeList)   //TODO拉取用户的关注列表
+		apiRouter.GET("/relation/follower/list/", controller.FollowerList) //TODO拉取用户的粉丝列表
 	}
 	return r
 }
