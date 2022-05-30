@@ -7,6 +7,7 @@ import (
 	"ADDD_DOUYIN/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func FavoriteAction(ctx *gin.Context) {
@@ -27,7 +28,7 @@ func FavoriteAction(ctx *gin.Context) {
 		action.UserId = claim.Id
 	}
 
-	if err := action.Action(); err != nil {
+	if err = action.Action(); err != nil {
 		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
 		return
 	}
@@ -37,15 +38,21 @@ func FavoriteAction(ctx *gin.Context) {
 
 func FavoriteList(ctx *gin.Context) {
 	var videos []*model.Video
-	var err error
-	if videos, err = service.FavoriteList(ctx.Query("user_id")); err != nil {
+	u64, err := strconv.ParseUint(ctx.Query("user_id"), 10, 32)
+	userId := uint(u64)
+	if err != nil {
+		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
+		return
+	}
+	if videos, err = service.FavoriteList(userId); err != nil {
 		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
 		return
 	}
 
 	ctx.JSON(http.StatusOK, serializer.FeedResponse{
-		Response:  serializer.Success,
-		VideoList: serializer.PackVideos(videos),
+		Response: serializer.Success,
+		// videos已经是like，不进行检查
+		VideoList: serializer.PackVideos(videos, userId, false, true),
 	})
 
 }

@@ -135,7 +135,7 @@ func PublishList(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, serializer.FeedResponse{
 		Response:  serializer.Success,
-		VideoList: serializer.PackVideos(res),
+		VideoList: serializer.PackVideos(res, claim.Id, true, false),
 	})
 
 }

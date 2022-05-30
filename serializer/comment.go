@@ -4,7 +4,7 @@ import "ADDD_DOUYIN/model"
 
 type CommentListResponse struct {
 	Response
-	CommentList []*Comment `json:"comment_list;omitempty"`
+	CommentList []*Comment `json:"comment_list,omitempty"`
 }
 
 type CommentResponse struct {

@@ -11,6 +11,5 @@ type Video struct {
 	CoverUrl      string //视频封面地址
 	FavoriteCount int64  //`gorm:"index;not null"` //视频的点赞总数
 	CommentCount  int64  //视频的评论总数
-	IsFavorite    bool   //true已点赞，false未点赞
 	Title         string
 }

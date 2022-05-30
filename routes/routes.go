@@ -2,11 +2,10 @@ package routes
 
 import (
 	"ADDD_DOUYIN/controller"
-	"net/http"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 //路由配置

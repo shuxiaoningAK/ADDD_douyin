@@ -3,6 +3,7 @@ package service
 import (
 	"ADDD_DOUYIN/conf"
 	"ADDD_DOUYIN/model"
+	"ADDD_DOUYIN/util"
 )
 
 type CommentAction struct {
@@ -35,6 +36,10 @@ func (c *CommentAction) create() (*model.Comment, error) {
 		return nil, err
 	}
 
+	if err := util.Redis.IncrComment(c.VideoId); err != nil {
+		return nil, err
+	}
+
 	err := conf.DB.Preload("User").First(&comment).Error
 	return &comment, err
 }
@@ -42,7 +47,13 @@ func (c *CommentAction) create() (*model.Comment, error) {
 func (c *CommentAction) delete() error {
 	comment := model.Comment{}
 	comment.ID = c.CommentId
-	return conf.DB.Delete(&comment).Error
+	if err := conf.DB.First(&comment).Error; err != nil {
+		return err
+	}
+	if err := conf.DB.Delete(&comment).Error; err != nil {
+		return err
+	}
+	return util.Redis.DecrComment(comment.VideoId)
 }
 
 func CommentList(videoId string) ([]*model.Comment, error) {

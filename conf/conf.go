@@ -3,6 +3,7 @@ package conf
 import (
 	"ADDD_DOUYIN/util"
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"gopkg.in/ini.v1"
 	"net/url"
@@ -40,4 +41,12 @@ func Init() {
 	id := file.Section("cos").Key("id").String()
 	key := file.Section("cos").Key("key").String()
 	util.InitCos(b, id, key)
+
+	// 初始化redis
+	conf := &redis.Options{
+		Addr:     file.Section("redis").Key("url").String(),
+		Password: file.Section("redis").Key("password").String(),
+		DB:       0,
+	}
+	util.InitRedis(conf)
 }
