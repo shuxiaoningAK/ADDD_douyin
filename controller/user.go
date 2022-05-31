@@ -105,7 +105,7 @@ func Publish(ctx *gin.Context) {
 		return
 	}
 
-	if video.PlayUrl, err = util.UploadVideo(util.NextUuid(), data); err != nil {
+	if err = util.UploadVideo(util.NextUuid(), data, video); err != nil {
 		ctx.JSON(http.StatusOK, serializer.ConvertErr(err))
 		return
 	}

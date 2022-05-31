@@ -1,6 +1,7 @@
 package util
 
 import (
+	"ADDD_DOUYIN/model"
 	"context"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"mime/multipart"
@@ -10,8 +11,10 @@ import (
 )
 
 var client *cos.Client
+var baseUrl string
 
 func InitCos(url *cos.BaseURL, id, key string) {
+	baseUrl = url.BucketURL.String()
 	client = cos.NewClient(url, &http.Client{
 		//设置超时时间
 		Timeout: 100 * time.Second,
@@ -23,18 +26,22 @@ func InitCos(url *cos.BaseURL, id, key string) {
 	})
 }
 
-func UploadVideo(name string, data *multipart.FileHeader) (string, error) {
+func UploadVideo(name string, data *multipart.FileHeader, video *model.Video) error {
 	src, err := data.Open()
 	if err != nil {
-		return "", err
+		return err
 	}
 	defer src.Close()
 
-	name = name + path.Ext(data.Filename)
+	withVideoExt := name + path.Ext(data.Filename)
+	withImgExt := name + "_0.jpg"
 
-	_, err = client.Object.Put(context.Background(), name, src, nil)
-	if err != nil {
-		return "", err
+	if _, err = client.Object.Put(context.Background(), withVideoExt, src, nil); err != nil {
+		return err
+	} else {
+		video.PlayUrl = baseUrl + "/" + withVideoExt
+		video.CoverUrl = baseUrl + "/" + withImgExt
+		return nil
 	}
-	return client.Object.GetObjectURL(name).String(), nil
+
 }
