@@ -10,6 +10,7 @@ import (
 	"strconv"
 )
 
+// 关注操作
 func RelationAction(ctx *gin.Context) {
 	var action service.RelationAction
 	if err := ctx.ShouldBindQuery(&action); err != nil {
@@ -36,7 +37,9 @@ func RelationAction(ctx *gin.Context) {
 
 }
 
+// 关注列表
 func FollowerList(ctx *gin.Context) {
+
 	userId, err := verifyTokenFromQueryAndRetId(ctx)
 	if err != nil {
 		return
@@ -54,6 +57,7 @@ func FollowerList(ctx *gin.Context) {
 	}
 }
 
+// 粉丝列表
 func FolloweeList(ctx *gin.Context) {
 	userId, err := verifyTokenFromQueryAndRetId(ctx)
 	if err != nil {
@@ -72,6 +76,7 @@ func FolloweeList(ctx *gin.Context) {
 	}
 }
 
+// 验证token
 func verifyTokenFromQueryAndRetId(ctx *gin.Context) (uint, error) {
 	token, claim, err := util.ParseToken(ctx.Query("token"))
 	if err != nil || !token.Valid {

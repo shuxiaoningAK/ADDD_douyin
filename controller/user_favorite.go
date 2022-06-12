@@ -10,6 +10,7 @@ import (
 	"strconv"
 )
 
+// 点赞
 func FavoriteAction(ctx *gin.Context) {
 	var action service.UserFavoriteAction
 	if err := ctx.ShouldBindQuery(&action); err != nil {
@@ -36,6 +37,7 @@ func FavoriteAction(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, serializer.Success)
 }
 
+// 喜欢列表
 func FavoriteList(ctx *gin.Context) {
 	var videos []*model.Video
 	u64, err := strconv.ParseUint(ctx.Query("user_id"), 10, 32)

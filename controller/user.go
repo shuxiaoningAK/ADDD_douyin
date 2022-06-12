@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// 用户注册
 func UserRegister(c *gin.Context) {
 	var userRegisterService service.UserService
 	username := c.Query("username")
@@ -26,6 +27,7 @@ func UserRegister(c *gin.Context) {
 	}
 }
 
+// 用户登录
 func UserLogin(c *gin.Context) {
 	var userLoginService service.UserService
 	username := c.Query("username")
@@ -42,6 +44,7 @@ func UserLogin(c *gin.Context) {
 	}
 }
 
+// 用户信息
 func UserInfo(c *gin.Context) {
 	var userInfoService service.UserInfoService
 	tokenString := c.Query("token")
@@ -86,6 +89,7 @@ func UserInfo(c *gin.Context) {
 	}
 }
 
+// 发布视频
 func Publish(ctx *gin.Context) {
 	video := &model.Video{}
 	token, claims, err := util.ParseToken(ctx.PostForm("token"))
@@ -119,6 +123,7 @@ func Publish(ctx *gin.Context) {
 
 }
 
+// 发布列表
 func PublishList(ctx *gin.Context) {
 	token, claim, err := util.ParseToken(ctx.Query("token"))
 	if err != nil || !token.Valid {

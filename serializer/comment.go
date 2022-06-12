@@ -2,6 +2,10 @@ package serializer
 
 import "ADDD_DOUYIN/model"
 
+/*
+
+	序列化
+*/
 type CommentListResponse struct {
 	Response
 	CommentList []*Comment `json:"comment_list,omitempty"`

@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+//  查看评论列表
 func CommentList(ctx *gin.Context) {
 	token, claim, err := util.ParseToken(ctx.Query("token"))
 	if err != nil || !token.Valid {
@@ -26,6 +27,7 @@ func CommentList(ctx *gin.Context) {
 	}
 }
 
+// 发表评论
 func CommentAction(ctx *gin.Context) {
 	var action service.CommentAction
 	if err := ctx.ShouldBind(&action); err != nil {
