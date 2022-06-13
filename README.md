@@ -5,10 +5,10 @@ This is a project for a group. The goal is for the champion.
 **实现的一个mini版抖音服务端**
 
 ## 1.基础接口
-   1. - [x]  视频流接口   //TODO开发中
+   1. - [x]  视频流接口  
    2. - [x]  用户注册
    3. - [x]  用户登录      
-   4. - [x]  用户信息    //TODO 需要测试
+   4. - [x]  用户信息    
    5. - [x]  投稿接口
    6. - [x]  发布接口
 
@@ -32,18 +32,15 @@ This is a project for a group. The goal is for the champion.
 douyin/
 ├── conf
 ├── controller
-├── middleware
 ├── model
 ├── routes
 ├── serializer
 ├── service
 └── util
 ```
-![summ](docs/summ.png)
 
 - conf : 用于存储配置文件
 - controller : 用于处理请求JSON格式返回
-- middleware : 自定义的中间件
 - model : gorm使用的数据库模型
 - routes : 路由转发
 - serializer：定义序列化json的结构体
@@ -71,15 +68,5 @@ ALTER TABLE user MODIFY COLUMN name VARCHAR(50) BINARY CHARACTER SET utf8 COLLAT
 1. 可以使用**postman**对接口进行测试
 ![postman](docs/postman.png)
 1. 也可使用客户端测试
-
-
-## 后续的优化 //TODO
-
-### 飞书文档中提到的加分项
-1.是否考虑过SQL注入，越权等安全问题的防御方式\
-2.数据表是否设置了合理的索引，处理了常见的性能问题
-
-### 啊对对队中实现的优化
-未完成
 
 
